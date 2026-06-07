@@ -133,6 +133,111 @@ void drawCircle(int centerX, int centerY, int radius)
     }
 }
 
+#define MAX_SHAPES 100
+
+typedef struct
+{
+    int id;
+    int type;
+
+    int x;
+    int y;
+
+    int width;
+    int height;
+
+    int active;
+
+} Shape;
+Shape shapes[MAX_SHAPES];
+int shapeCount = 0;
+
+void addRectangle(
+    int row,
+    int col,
+    int height,
+    int width)
+{
+    shapes[shapeCount].id = shapeCount + 1;
+    shapes[shapeCount].type = 1;
+
+    shapes[shapeCount].x = col;
+    shapes[shapeCount].y = row;
+
+    shapes[shapeCount].width = width;
+    shapes[shapeCount].height = height;
+
+    shapes[shapeCount].active = 1;
+
+    shapeCount++;
+}
+
+void redrawAll()
+{
+    initializeCanvas();
+
+    drawBorder();
+
+    for(int i=0;i<shapeCount;i++)
+    {
+        if(shapes[i].active == 1)
+        {
+            if(shapes[i].type == 1)
+            {
+                drawRectangle(
+                    shapes[i].y,
+                    shapes[i].x,
+                    shapes[i].height,
+                    shapes[i].width
+                );
+            }
+        }
+    }
+}
+
+void deleteShape(int id)
+{
+    for(int i=0;i<shapeCount;i++)
+    {
+        if(shapes[i].id == id)
+        {
+            shapes[i].active = 0;
+            return;
+        }
+    }
+}
+
+void displayShapes()
+{
+    printf("\nStored Shapes\n");
+
+    for(int i=0;i<shapeCount;i++)
+    {
+        printf(
+            "\nID=%d Type=%d Active=%d",
+            shapes[i].id,
+            shapes[i].type,
+            shapes[i].active
+        );
+    }
+} 
+
+void modifyRectangle(
+    int id,
+    int newWidth,
+    int newHeight)
+{
+    for(int i=0;i<shapeCount;i++)
+    {
+        if(shapes[i].id == id)
+        {
+            shapes[i].width = newWidth;
+            shapes[i].height = newHeight;
+            return;
+        }
+    }
+}
+
 
 
 
@@ -142,15 +247,19 @@ int main()
 
     drawBorder();
 
-    drawRectangle(5,10,8,20);
+  addRectangle(5,10,8,20);
 
-    drawLine(5,20,50,15);
+  addRectangle(2,40,6,15);
 
-    drawTriangle(20,5,10,15,30,15);
+  addRectangle(15,30,5,25); 
 
-    drawCircle(55,12,6);
+  deleteShape(2);
 
-    displayCanvas();
+  modifyRectangle(1,30,12);
 
-    return 0;
+  redrawAll();
+
+  displayCanvas();
+    
+  return 0;
 }
