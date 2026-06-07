@@ -28,6 +28,7 @@ void displayCanvas()
         printf("\n");
     }
 }
+
 void plotPixel(int row, int col)
 {
     if(row >= 0 && row < ROWS &&
@@ -51,6 +52,7 @@ void drawBorder()
         plotPixel(i, COLS - 1);
     }
 }
+
 void drawRectangle(int row, int col, int height, int width)
 {
     for(int j = col; j < col + width; j++)
@@ -65,6 +67,7 @@ void drawRectangle(int row, int col, int height, int width)
         plotPixel(i, col + width - 1);
     }
 }
+
 void drawLine(int x1, int y1, int x2, int y2)
 {
     int dx = x2 - x1;
@@ -91,6 +94,7 @@ void drawLine(int x1, int y1, int x2, int y2)
         y += yInc;
     }
 }
+
 void drawTriangle(
     int x1,int y1,
     int x2,int y2,
@@ -100,6 +104,36 @@ void drawTriangle(
     drawLine(x2,y2,x3,y3);
     drawLine(x3,y3,x1,y1);
 }
+
+void drawCircle(int centerX, int centerY, int radius)
+{
+    for(int y = centerY - radius;
+        y <= centerY + radius;
+        y++)
+    {
+        for(int x = centerX - radius;
+            x <= centerX + radius;
+            x++)
+        {
+            int dx = x - centerX;
+            int dy = y - centerY;
+
+            int distanceSquared =
+                dx * dx + dy * dy;
+
+            int radiusSquared =
+                radius * radius;
+
+            if(abs(distanceSquared - radiusSquared)
+                <= radius)
+            {
+                plotPixel(y, x);
+            }
+        }
+    }
+}
+
+
 
 
 int main()
@@ -113,6 +147,8 @@ int main()
     drawLine(5,20,50,15);
 
     drawTriangle(20,5,10,15,30,15);
+
+    drawCircle(55,12,6);
 
     displayCanvas();
 
