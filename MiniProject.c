@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include<stdlib.h>
 
 #define ROWS 25
 #define COLS 80
@@ -64,6 +65,41 @@ void drawRectangle(int row, int col, int height, int width)
         plotPixel(i, col + width - 1);
     }
 }
+void drawLine(int x1, int y1, int x2, int y2)
+{
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+
+    int steps;
+
+    if(abs(dx) > abs(dy))
+        steps = abs(dx);
+    else
+        steps = abs(dy);
+
+    float xInc = dx / (float)steps;
+    float yInc = dy / (float)steps;
+
+    float x = x1;
+    float y = y1;
+
+    for(int i = 0; i <= steps; i++)
+    {
+        plotPixel((int)(y + 0.5), (int)(x + 0.5));
+
+        x += xInc;
+        y += yInc;
+    }
+}
+void drawTriangle(
+    int x1,int y1,
+    int x2,int y2,
+    int x3,int y3)
+{
+    drawLine(x1,y1,x2,y2);
+    drawLine(x2,y2,x3,y3);
+    drawLine(x3,y3,x1,y1);
+}
 
 
 int main()
@@ -73,6 +109,10 @@ int main()
     drawBorder();
 
     drawRectangle(5,10,8,20);
+
+    drawLine(5,20,50,15);
+
+    drawTriangle(20,5,10,15,30,15);
 
     displayCanvas();
 
