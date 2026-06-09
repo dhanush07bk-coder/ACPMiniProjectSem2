@@ -46,7 +46,7 @@ void drawBorder()
         plotPixel(ROWS - 1, j);
     }
 
-    for(int i=0; i<ROWS; i++)
+    for(int i=0; i<ROWS; i++) 
     {
         plotPixel(i, 0);
         plotPixel(i, COLS - 1);
@@ -135,6 +135,7 @@ void drawCircle(int centerX, int centerY, int radius)
 
 #define MAX_SHAPES 100
 
+
 typedef struct
 {
     int id;
@@ -145,6 +146,14 @@ typedef struct
 
     int width;
     int height;
+
+    int x2;
+    int y2;
+
+    int x3;
+    int y3;
+
+    int radius;
 
     int active;
 
@@ -158,6 +167,12 @@ void addRectangle(
     int height,
     int width)
 {
+    if(shapeCount >= MAX_SHAPES)
+    {
+    printf("Storage Full!\n");
+    return;
+    }
+
     shapes[shapeCount].id = shapeCount + 1;
     shapes[shapeCount].type = 1;
 
@@ -172,16 +187,67 @@ void addRectangle(
     shapeCount++;
 }
 
+void addCircle(int centerX,int centerY,int radius)
+{
+    if(shapeCount >= MAX_SHAPES)
+        return;
+
+    shapes[shapeCount].id = shapeCount + 1;
+
+    shapes[shapeCount].type = 2;
+
+    shapes[shapeCount].x = centerX;
+    shapes[shapeCount].y = centerY;
+
+    shapes[shapeCount].radius = radius;
+
+    shapes[shapeCount].active = 1;
+
+    shapeCount++;
+
+    printf("Circle Added!\n");
+}
+
+void addTriangle(
+    int x1,int y1,
+    int x2,int y2,
+    int x3,int y3)
+{
+    if(shapeCount >= MAX_SHAPES)
+        return;
+
+    shapes[shapeCount].id = shapeCount + 1;
+
+    shapes[shapeCount].type = 3;
+
+    shapes[shapeCount].x = x1;
+    shapes[shapeCount].y = y1;
+
+    shapes[shapeCount].x2 = x2;
+    shapes[shapeCount].y2 = y2;
+
+    shapes[shapeCount].x3 = x3;
+    shapes[shapeCount].y3 = y3;
+
+    shapes[shapeCount].active = 1;
+
+    shapeCount++;
+
+    printf("Triangle Added!\n");
+}
+
 void redrawAll()
 {
     initializeCanvas();
 
     drawBorder();
 
-    for(int i=0;i<shapeCount;i++)
+    for(int i = 0; i < shapeCount; i++)
     {
         if(shapes[i].active == 1)
         {
+            /* Rectangle */
+
             if(shapes[i].type == 1)
             {
                 drawRectangle(
@@ -189,6 +255,33 @@ void redrawAll()
                     shapes[i].x,
                     shapes[i].height,
                     shapes[i].width
+                );
+            }
+
+            /* Circle */
+
+            if(shapes[i].type == 2)
+            {
+                drawCircle(
+                    shapes[i].x,
+                    shapes[i].y,
+                    shapes[i].radius
+                );
+            }
+
+            /* Triangle */
+
+            if(shapes[i].type == 3)
+            {
+                drawTriangle(
+                    shapes[i].x,
+                    shapes[i].y,
+
+                    shapes[i].x2,
+                    shapes[i].y2,
+
+                    shapes[i].x3,
+                    shapes[i].y3
                 );
             }
         }
@@ -202,25 +295,44 @@ void deleteShape(int id)
         if(shapes[i].id == id)
         {
             shapes[i].active = 0;
+            printf("Shape Deleted Successfully!\n");
             return;
         }
     }
+    printf("Shape ID Not Found!\n");
 }
 
 void displayShapes()
 {
-    printf("\nStored Shapes\n");
+    printf("\n===== STORED SHAPES =====\n");
 
     for(int i=0;i<shapeCount;i++)
     {
-        printf(
-            "\nID=%d Type=%d Active=%d",
-            shapes[i].id,
-            shapes[i].type,
-            shapes[i].active
-        );
+        printf("\nID=%d ", shapes[i].id);
+
+        if(shapes[i].type == 1)
+            printf("Rectangle ");
+
+        else if(shapes[i].type == 2)
+            printf("Circle ");
+
+        else if(shapes[i].type == 3)
+            printf("Triangle ");
+
+        printf("Active=%d",
+               shapes[i].active);
     }
-} 
+    int activeCount = 0;
+
+for(int i=0;i<shapeCount;i++)
+{
+    if(shapes[i].active == 1)
+        activeCount++;
+}
+
+printf("\nActive Shapes = %d\n", activeCount);
+    printf("\n");
+}
 
 void modifyRectangle(
     int id,
@@ -233,33 +345,160 @@ void modifyRectangle(
         {
             shapes[i].width = newWidth;
             shapes[i].height = newHeight;
+            printf("Rectangle Modified Successfully!\n");
             return;
         }
     }
-}
+    printf("Shape ID Not Found!\n");
 
+}
 
 
 
 int main()
 {
-    initializeCanvas();
+    int choice;
 
-    drawBorder();
+    while(1)
+    {
+        printf("\n=================================");
+        printf("\n      2D GRAPHICS EDITOR");
+        printf("\n=================================\n");
 
-  addRectangle(5,10,8,20);
+        printf("1. Add Rectangle\n");
+        printf("2. Add Circle\n");
+        printf("3. Add Triangle\n");
+        printf("4. Delete Shape\n");
+        printf("5. Modify Rectangle\n");
+        printf("6. Display Shape List\n");
+        printf("7. Show Canvas\n");
+        printf("8. Exit\n");
 
-  addRectangle(2,40,6,15);
-
-  addRectangle(15,30,5,25); 
-
-  deleteShape(2);
-
-  modifyRectangle(1,30,12);
-
-  redrawAll();
-
-  displayCanvas();
+        printf("\nEnter Choice: ");
+        scanf("%d",&choice);
     
-  return 0;
+
+       switch(choice){
+            case 1:
+                {
+                        int row,col,height,width;
+
+                        printf("Enter Row Col Height Width: ");
+
+                        scanf("%d%d%d%d",
+                        &row,
+                        &col,
+                        &height,
+                        &width);
+
+                    addRectangle(
+                        row,
+                        col,
+                        height,
+                        width);
+
+                    break;
+                }
+
+            case 2:
+                    {
+                    int x,y,r;
+
+                    printf("Enter CenterX CenterY Radius: ");
+
+                    scanf("%d%d%d",
+                     &x,
+                     &y,
+                     &r);
+
+                addCircle(x,y,r);
+
+                 break;
+                }
+
+    case 3:
+    {
+        int x1,y1,x2,y2,x3,y3;
+
+        printf("Enter x1 y1 x2 y2 x3 y3 : ");
+
+        scanf("%d%d%d%d%d%d",
+              &x1,&y1,
+              &x2,&y2,
+              &x3,&y3);
+
+        addTriangle(
+            x1,y1,
+            x2,y2,
+            x3,y3);
+
+        break;
+    }
+
+    case 4:
+    {
+        int id;
+
+        printf("Enter Shape ID to Delete: ");
+
+        scanf("%d",&id);
+
+        deleteShape(id);
+
+        break;
+    }
+
+    case 5:
+    {
+        int id,width,height;
+
+        printf("Enter ID Width Height: ");
+
+        scanf("%d%d%d",
+              &id,
+              &width,
+              &height);
+
+        modifyRectangle(
+            id,
+            width,
+            height);
+
+        break;
+    }
+
+    case 6:
+    {
+        displayShapes();
+
+        break;
+    }
+
+    case 7:
+    {
+        redrawAll();
+
+        displayCanvas();
+
+        break;
+    }
+
+    case 8:
+    {
+        printf("\nThank You For Using 2D Graphics Editor\n");
+        printf("Program Terminated Successfully.\n");
+
+        return 0;
+    }
+
+    default:
+    {
+        printf("Invalid Choice!\n");
+    }
+
+}
+    }
+
+
+    return 0;
 }
