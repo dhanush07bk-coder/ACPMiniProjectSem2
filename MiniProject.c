@@ -115,17 +115,17 @@ void drawCircle(int centerX, int centerY, int radius)
             x <= centerX + radius;
             x++)
         {
-            int dx = x - centerX;
-            int dy = y - centerY;
+            float dx = x - centerX;
+            float dy = (y - centerY) * 2;
 
-            int distanceSquared =
-                dx * dx + dy * dy;
+            float distanceSquared =
+            dx * dx + dy * dy;
 
-            int radiusSquared =
+            float radiusSquared =
                 radius * radius;
 
             if(abs(distanceSquared - radiusSquared)
-                <= radius)
+                <= radius/2)
             {
                 plotPixel(y, x);
             }
@@ -236,6 +236,30 @@ void addTriangle(
     printf("Triangle Added!\n");
 }
 
+void addLine(
+    int x1,int y1,
+    int x2,int y2)
+{
+    if(shapeCount >= MAX_SHAPES)
+        return;
+
+    shapes[shapeCount].id = shapeCount + 1;
+
+    shapes[shapeCount].type = 4;
+
+    shapes[shapeCount].x = x1;
+    shapes[shapeCount].y = y1;
+
+    shapes[shapeCount].x2 = x2;
+    shapes[shapeCount].y2 = y2;
+
+    shapes[shapeCount].active = 1;
+
+    shapeCount++;
+
+    printf("Line Added!\n");
+}
+
 void redrawAll()
 {
     initializeCanvas();
@@ -284,6 +308,16 @@ void redrawAll()
                     shapes[i].y3
                 );
             }
+            /*line*/
+            if(shapes[i].type == 4)
+            {
+                drawLine(
+                    shapes[i].x,
+                    shapes[i].y,
+                    shapes[i].x2,
+                    shapes[i].y2
+                );
+            }
         }
     }
 }
@@ -318,6 +352,9 @@ void displayShapes()
 
         else if(shapes[i].type == 3)
             printf("Triangle ");
+        
+        else if(shapes[i].type == 4)
+            printf("Line ");
 
         printf("Active=%d",
                shapes[i].active);
@@ -368,11 +405,12 @@ int main()
         printf("1. Add Rectangle\n");
         printf("2. Add Circle\n");
         printf("3. Add Triangle\n");
-        printf("4. Delete Shape\n");
-        printf("5. Modify Rectangle\n");
-        printf("6. Display Shape List\n");
-        printf("7. Show Canvas\n");
-        printf("8. Exit\n");
+        printf("4. Add Line\n");
+        printf("5. Delete Shape\n");
+        printf("6. Modify Rectangle\n");
+        printf("7. Display Shape List\n");
+        printf("8. Show Canvas\n");
+        printf("9. Exit\n");
 
         printf("\nEnter Choice: ");
         scanf("%d",&choice);
@@ -436,6 +474,23 @@ int main()
     }
 
     case 4:
+{
+    int x1,y1,x2,y2;
+
+    printf("Enter x1 y1 x2 y2 : ");
+
+    scanf("%d%d%d%d",
+          &x1,&y1,
+          &x2,&y2);
+
+    addLine(
+        x1,y1,
+        x2,y2);
+
+    break;
+}
+
+    case 5:
     {
         int id;
 
@@ -448,7 +503,7 @@ int main()
         break;
     }
 
-    case 5:
+    case 6:
     {
         int id,width,height;
 
@@ -467,14 +522,14 @@ int main()
         break;
     }
 
-    case 6:
+    case 7 :
     {
         displayShapes();
 
         break;
     }
 
-    case 7:
+    case 8:
     {
         redrawAll();
 
@@ -483,7 +538,7 @@ int main()
         break;
     }
 
-    case 8:
+    case 9 :
     {
         printf("\nThank You For Using 2D Graphics Editor\n");
         printf("Program Terminated Successfully.\n");
