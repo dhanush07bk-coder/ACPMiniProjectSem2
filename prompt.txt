@@ -1,9 +1,43 @@
-Create a 2D graphics editor using '*' and '_'.
-Give code for drawing rectangle, line, triangle and circle in C.
-How do I store shapes using structures and arrays?
-Help me add delete and modify shape functionality.
-How do I redraw all shapes after deleting or modifying them?
-Give a menu-driven interface for the graphics editor.
-Help me fix compilation and Git errors.
-Explain the project for viva preparation.
-Tell me what improvements I can add to make the project complete.
+Create a repository in Github.
+
+Write a 2D graphics editor using * and _.
+
+Give whole code.
+
+This much done now for day 2 commit send code which is bit unique.
+
+How to undo commit.
+
+Give rest of the codes now.
+
+Just give it pa ill modify it accordingly.
+
+Not complete give it like before pieces.
+
+Can I remove it from git itself without terminal.
+
+Now lets continue with the code ig.
+
+Yup working.
+
+Lesgoo.
+
+Give redraw all section again but with all changes.
+
+After redraw all what to do?
+
+I didnt test it yet.
+
+But isnt 2 delete shape.
+
+Tell which part to change where to change which ill change.
+
+4 one where.
+
+Done now.
+
+Why does my circle doesnt feel like circle.
+
+Give coordinate for circle.
+
+It also required drawing lines too.
