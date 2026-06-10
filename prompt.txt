@@ -2,13 +2,9 @@ Create a repository in Github.
 
 Write a 2D graphics editor using * and _.
 
-Give whole code.
-
 This much done now for day 2 commit send code which is bit unique.
 
 How to undo commit.
-
-Give rest of the codes now.
 
 Just give it pa ill modify it accordingly.
 
